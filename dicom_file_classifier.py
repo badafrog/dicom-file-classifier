@@ -8,7 +8,7 @@ import time
 # set initial values
 src_path = "dicom file directory"
 des_path = "destination directory"
-process_count = 4    # number of process you use
+process_count = 10    # number of process you use
 
 def sd_form(str):    # Series Description
     str = str.replace(' ', '_')
@@ -89,7 +89,6 @@ def create_dcm_folder(id, new_path, path_list):
                 create_folder(new_folder_path)
                 shutil.copy2(filepath, new_folder_path)    # copy file # (filepath) > (new_folder_path)
 
-
 ##################################################
 if __name__ == "__main__":
     start = time.time()
@@ -97,13 +96,12 @@ if __name__ == "__main__":
     new_path = os.path.abspath(des_path)
     dir_list = get_dirs(path)
     dir_list = split_list(dir_list, process_count)
-    list_a = list()
-    for i in range(len(dir_list)):
-        list_a.append(i)
-    for i, p in enumerate(list_a):
-        list_a[i] = Process(target=create_dcm_folder, args=(i, new_path, dir_list[i]))
-    for p in list_a:
+    print(dir_list)
+    process_l = list()
+    for i, dir in enumerate(dir_list):
+        p = Process(target=create_dcm_folder, args=(i, new_path, dir))
         p.start()
-    for p in list_a:
+        process_l.append(p)
+    for p in process_l:
         p.join()
     print(f"time: {time.time() - start}")
