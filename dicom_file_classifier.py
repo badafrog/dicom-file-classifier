@@ -96,7 +96,6 @@ if __name__ == "__main__":
     new_path = os.path.abspath(des_path)
     dir_list = get_dirs(path)
     dir_list = split_list(dir_list, process_count)
-    print(dir_list)
     process_l = list()
     for i, dir in enumerate(dir_list):
         p = Process(target=create_dcm_folder, args=(i, new_path, dir))
