@@ -74,7 +74,11 @@ def create_dcm_folder(id, new_path, path_list):
             for file in files:
                 filepath =os.path.join(rootpath, file)
                 # data elements info for foldername
-                ds = pydicom.dcmread(filepath, specific_tags=['SeriesDescription', 'SeriesNumber', 'PatientName', 'PatientID'])
+                try:
+                    ds = pydicom.dcmread(filepath, specific_tags=['SeriesDescription','SeriesNumber','PatientName','PatientID'])
+                    
+                except:
+                    continue
                 series_des_raw = str(ds[ds.data_element('SeriesDescription').tag].value)
                 series_des = sd_form(series_des_raw)
                 series_num_raw = str(ds[ds.data_element('SeriesNumber').tag].value)
