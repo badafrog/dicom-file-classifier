@@ -73,15 +73,15 @@ def create_dcm_folder(id, new_path, path_list):
             rootpath = os.path.join(path, root)
             for file in files:
                 filepath =os.path.join(rootpath, file)
-                # headers info for foldername
-                header = pydicom.dcmread(filepath, specific_tags=['SeriesDescription', 'SeriesNumber', 'PatientName', 'PatientID'])
-                series_des_raw = str(header[header.data_element('SeriesDescription').tag].value)
+                # data elements info for foldername
+                ds = pydicom.dcmread(filepath, specific_tags=['SeriesDescription', 'SeriesNumber', 'PatientName', 'PatientID'])
+                series_des_raw = str(ds[ds.data_element('SeriesDescription').tag].value)
                 series_des = sd_form(series_des_raw)
-                series_num_raw = str(header[header.data_element('SeriesNumber').tag].value)
+                series_num_raw = str(ds[ds.data_element('SeriesNumber').tag].value)
                 series_num = sn_form(series_num_raw)
-                patient_name_raw = str(header[header.data_element('PatientName').tag].value)
+                patient_name_raw = str(ds[ds.data_element('PatientName').tag].value)
                 patient_name = pn_form(patient_name_raw)
-                patient_id = str(header[header.data_element('PatientID').tag].value)
+                patient_id = str(ds[ds.data_element('PatientID').tag].value)
 
                 parentF_name = f'{patient_name}_{patient_id}'
                 subF_name = f'{series_des}_{series_num}'
